@@ -10,11 +10,16 @@ import java.util.Scanner;
 public class Client {
     private static final String SERVER_ADDRESS = "127.0.0.1";
     private static final int SERVER_PORT = 2020;
+	private static final int TRY_AGAIN=0;
+	private static final int YOU_WIN=1;
+	private static final int YOU_LOSED=2;
 
 	public static void main(String[] args) {
+
 		System.out.println("guess number between 0-10 ");
 		try {
-			doGuess();
+			Socket socket=new Socket(SERVER_ADDRESS,SERVER_PORT);
+			doGuess(socket);
 		} catch (IOException e) {
 			
 			e.printStackTrace();
@@ -24,27 +29,33 @@ public class Client {
 
 	}
 
-    private static void doGuess() throws IOException {
-		System.out.println(">> ");
+    private static void doGuess(Socket socket) throws IOException {
+		System.out.print(">> ");
 		int message=new Scanner(System.in).nextInt();
-		Socket socket=new Socket(SERVER_ADDRESS,SERVER_PORT);
+
 		doSendInt(socket, message);
 		
 		int receivedMessage=doReceiveInt(socket);
-		displayMessage(receivedMessage);
+		displayMessage(receivedMessage,socket);
 		
 		
 	}
 
 
 
-	private static void displayMessage(int rm) throws IOException {
-		if(rm==0) {
-			System.out.println("try again");
-			doGuess();
+	private static void displayMessage(int receivedMessage, Socket socket) throws IOException {
+		if(receivedMessage==YOU_WIN) {
+			System.out.println("you win ^^ ");
+			return ;
 		}
-		if(rm==1) {
-			System.out.println("you losed ");
+		if(receivedMessage==YOU_LOSED) {
+			System.out.println("you losed :(");
+			return ;
+		}
+		if(receivedMessage==TRY_AGAIN) {
+			System.out.println("try again");
+			doGuess(socket);
+			return ;
 		}
 		
 		
