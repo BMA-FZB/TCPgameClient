@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-    private static final String SERVER_ADDRESS = "127.0.0.1";
+    private static final String SERVER_ADDRESS = "192.168.58.181";
     private static final int SERVER_PORT = 2020;
 	private static final int TRY_AGAIN=0;
 	private static final int YOU_WIN=1;
